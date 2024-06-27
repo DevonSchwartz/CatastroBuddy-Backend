@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from pymongo import MongoClient
 from schema import Fields
 from objects import item
+from bson.objectid import ObjectId
 import os
 
 app = Flask(__name__)
@@ -32,7 +33,8 @@ def add_client_items(client_id):
                             request_data[Fields.originalPhoto.name], request_data[Fields.price.name],
                             request_data[Fields.damaged.name], request_data[Fields.damagedPhoto.name])
     
-    new_data = collection.update_one({Fields.clientId.name: client_id}, {"$push": {Fields.items.name: new_item.to_dict()}}, upsert=False)
+    new_data = collection.update_one({Fields.clientId.name: client_id}, 
+                                     {"$push": {Fields.items.name: new_item.to_dict()}}, upsert=False)
 
     if new_data.modified_count == 0:
         return jsonify({"Error": "Entry not found"}), 400
@@ -43,5 +45,10 @@ def add_client_items(client_id):
 Delete a specific item for a specific client_id based on an object id
 '''
 @app.route("/entry/<client_id>/<item_id>", methods=['DELETE'])
-def delete_client_items(client_id):
-    pass 
+def delete_client_items(client_id, item_id):
+    delete_data = collection.update_one({Fields.clientId.name: client_id}, 
+                                        {"$pull": {Fields.items.name: {"_item_id": ObjectId(item_id)}}})
+    if delete_data.modified_count == 0:
+        return jsonify({"Error": "Entry not found"}), 400
+    else:
+        return jsonify({"Success": "Item deleted"}) 
