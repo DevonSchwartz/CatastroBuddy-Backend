@@ -1,4 +1,5 @@
 from schema import Fields
+from bson.objectid import ObjectId
 
 '''
 An item object. This represents each household item that belongs to a client
@@ -11,6 +12,7 @@ class Item:
         self.price = price
         self.damaged = damaged
         self.damaged_photo = damaged_photo
+        self.item_id = ObjectId()
 
     '''
     Convert the object to a dictionary for easy serialization
@@ -22,5 +24,6 @@ class Item:
             Fields.originalPhoto.name: self.original_photo,
             Fields.price.name: self.price,
             Fields.damaged.name: self.damaged,
-            Fields.damagedPhoto.name: self.damaged_photo
+            Fields.damagedPhoto.name: self.damaged_photo,
+            Fields._item_id.name: self.item_id
         }

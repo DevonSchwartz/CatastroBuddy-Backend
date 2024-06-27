@@ -8,5 +8,6 @@ Fields = Enum("Fields", [
     'originalPhoto',
     'price',
     'damaged',
-    'damagedPhoto'
+    'damagedPhoto',
+    '_item_id'
 ])

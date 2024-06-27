@@ -37,4 +37,11 @@ def add_client_items(client_id):
     if new_data.modified_count == 0:
         return jsonify({"Error": "Entry not found"}), 400
     else:
-        return jsonify({"Success": "Item added"})
+        return jsonify({"Success": "Item added", '_item_id': str(new_item.item_id)})
+    
+'''
+Delete a specific item for a specific client_id based on an object id
+'''
+@app.route("/entry/<client_id>/<item_id>", methods=['DELETE'])
+def delete_client_items(client_id):
+    pass 
