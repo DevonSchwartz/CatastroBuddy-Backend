@@ -1,5 +1,10 @@
 from enum import Enum
 
 Fields = Enum("Fields", [
-    'clientId'
+    'clientId',
+    'itemName',
+    'description',
+    'originalPhoto',
+    'damaged',
+    'damagedPhoto'
 ])
