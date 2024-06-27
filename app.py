@@ -17,10 +17,18 @@ the database
 @app.route("/entry/<client_id>", methods=['GET'])
 def get_client_items(client_id):
     entry = collection.find_one({Fields.clientId.name: client_id})
-    if entry and entry[Fields.items.name]:
-        return jsonify(entry[Fields.items.name])
-    else:
+
+    if not (entry and entry[Fields.items.name]):
         return jsonify({"Error": "Entry not found"}), 400
+
+    # convert object ids to string before return
+    mongo_items = entry[Fields.items.name]
+
+    for i in range(0, len(mongo_items)):
+        mongo_items[i][Fields._item_id.name] = str(mongo_items[i][Fields._item_id.name])
+
+    return mongo_items
+
     
 
 '''
