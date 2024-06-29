@@ -1,11 +1,14 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from pymongo import MongoClient
 from schema import Fields
 from objects import item
 from bson.objectid import ObjectId
+from utils import create_response 
 import os
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": r"http://localhost:\d+"}})
 client = MongoClient('localhost', os.getenv('MONGO_LOCAL_PORT'))
 db = client.CatastroBuddy
 collection = db.HouseholdItems
@@ -19,7 +22,7 @@ def get_client_items(client_id):
     entry = collection.find_one({Fields.clientId.name: client_id})
 
     if not (entry and entry[Fields.items.name]):
-        return jsonify({"Error": "Entry not found"}), 400
+        return create_response(jsonify({"Error": "Entry not found"}), 400)
 
     # convert object ids to string before return
     mongo_items = entry[Fields.items.name]
@@ -27,7 +30,7 @@ def get_client_items(client_id):
     for i in range(0, len(mongo_items)):
         mongo_items[i][Fields._item_id.name] = str(mongo_items[i][Fields._item_id.name])
 
-    return mongo_items
+    return create_response(jsonify(mongo_items), 200)
 
     
 
