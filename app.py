@@ -30,7 +30,7 @@ def get_client_items(client_id):
     for i in range(0, len(mongo_items)):
         mongo_items[i][Fields._item_id.name] = str(mongo_items[i][Fields._item_id.name])
 
-    return create_response(jsonify(mongo_items), 200)
+    return create_response(jsonify({"items": mongo_items}), 200)
 
     
 
