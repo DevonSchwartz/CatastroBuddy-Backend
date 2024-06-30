@@ -49,9 +49,9 @@ def add_client_items(client_id):
                                      {"$push": {Fields.items.name: new_item.to_dict()}}, upsert=False)
 
     if new_data.modified_count == 0:
-        return jsonify({"Error": "Entry not found"}), 400
+        return create_response(jsonify({"Error": "Entry not found"}), 400)
     else:
-        return jsonify({"Success": "Item added", '_item_id': str(new_item._item_id)})
+        return create_response(jsonify({"Success": "Item added", '_item_id': str(new_item._item_id)}), 200)
     
 '''
 Delete a specific item for a specific client_id based on an object id
@@ -59,7 +59,7 @@ Delete a specific item for a specific client_id based on an object id
 @app.route("/entry/<client_id>/<_item_id>", methods=['DELETE'])
 def delete_client_item(client_id, _item_id):
     delete_data = collection.update_one({Fields.clientId.name: client_id}, 
-                                        {"$pull": {Fields.items.name: {"_item_id": ObjectId(_item_id)}}})
+                                        {"$pull": {Fields.items.name: {Fields._item_id.name: ObjectId(_item_id)}}})
     if delete_data.modified_count == 0:
         return jsonify({"Error": "Entry not found"}), 400
     else:
@@ -78,7 +78,8 @@ def update_client_item(client_id, _item_id):
     
     update_data = collection.update_one({Fields.clientId.name: client_id, Fields.items.name + "." + Fields._item_id.name: ObjectId(_item_id)}, 
                                         {"$set": {Fields.items.name + ".$": updated_item.to_dict()}})
+    
     if update_data.modified_count == 0:
-        return jsonify({"Error": "Entry not found"}), 400
+        return create_response(jsonify({"Error": "Entry not found"}), 400)
     else:
-        return jsonify({"Success": "Item updated"})
+        return create_response(jsonify({"Success": "Item updated"}), 200)

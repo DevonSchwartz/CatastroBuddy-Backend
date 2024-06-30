@@ -12,7 +12,7 @@ class Item:
         self.price = price
         self.damaged = damaged
         self.damaged_photo = damaged_photo
-        self._item_id = _item_id if _item_id else ObjectId()
+        self._item_id = ObjectId(_item_id) if _item_id else ObjectId()
 
     '''
     Convert the object to a dictionary for easy serialization
