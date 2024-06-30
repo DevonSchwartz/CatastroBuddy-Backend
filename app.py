@@ -21,7 +21,7 @@ the database
 def get_client_items(client_id):
     entry = collection.find_one({Fields.clientId.name: client_id})
 
-    if not (entry and entry[Fields.items.name]):
+    if not (entry and entry[Fields.items.name] != None):
         return create_response(jsonify({"Error": "Entry not found"}), 400)
 
     # convert object ids to string before return
