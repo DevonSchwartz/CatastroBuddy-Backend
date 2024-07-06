@@ -9,7 +9,7 @@ The backend REST API was built with [Flask](https://flask.palletsprojects.com/en
 1. Download either the [MongoDB GUI](https://www.mongodb.com/try/download/compass) or the [MongoDB Shell](https://www.mongodb.com/try/download/shell)
 2. Start a mongodb instance with `sudo systemctl start mongod`
 3. Run `sudo systemctl status mongod` to verify the server is running. The default port is 27017
-
+4. Upload test.json into a MongoDB collection. This has two usernames, "John Doe" and "Jane Doe" initialized with an empty household items array.
 ## Setting Up REST API
 Clone the repository and cd into CatastroBuddy-Backend
 0. If you do not already have Python, install Python for your local machine https://www.python.org/downloads/
